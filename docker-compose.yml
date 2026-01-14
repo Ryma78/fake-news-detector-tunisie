@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    ports: ["8000:8000"]
+    command: uvicorn predict_api:app --host 0.0.0.0 --port 8000
+  streamlit:
+    build: .
+    ports: ["8501:8501"]
+    command: streamlit run streamlit_frontend.py --server.port 8501 --server.address 0.0.0.0
+  mlflow:
+    build: .
+    ports: ["5000:5000"]
+    volumes:
+      - ./mlruns:/app/mlruns
+    working_dir: /app
+    command: mlflow ui --host 0.0.0.0 --port 5000

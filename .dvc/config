@@ -1,0 +1,4 @@
+[core]
+    remote = local
+[remotes.local]
+    url = .dvc/storage

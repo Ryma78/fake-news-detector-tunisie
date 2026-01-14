@@ -1,101 +1,137 @@
-# Fake News Detector
+# 📰 Détecteur de Fake News Tunisie
 
-A machine learning project for detecting fake news using SVM with Optuna optimization.
+Un système d'intelligence artificielle pour détecter les fake news en Tunisie utilisant le machine learning.
 
-## Project Structure
+## ✨ Fonctionnalités
+
+- 🤖 Modèle ML entraîné sur des données tunisiennes
+- 🚀 API FastAPI pour les prédictions
+- 🎨 Interface Streamlit moderne et intuitive
+- 🐳 Déploiement Docker complet
+- 📊 Suivi MLflow des expériences
+- 🔧 Pipeline de preprocessing automatique
+
+## 🚀 Démarrage rapide
+
+### Avec Docker (recommandé)
+```bash
+# Construire et lancer tous les services
+docker-compose up --build
+
+# Accéder à l'application
+# - Frontend Streamlit: http://localhost:8501
+# - API FastAPI: http://localhost:8000
+# - MLflow UI: http://localhost:5000
+```
+
+### Installation locale
+```bash
+# Installer les dépendances
+pip install -r requirements.txt
+
+# Entraîner le modèle
+python optuna_svm.py
+
+# Lancer l'API
+uvicorn predict_api:app --host 0.0.0.0 --port 8000
+
+# Lancer le frontend (dans un autre terminal)
+streamlit run streamlit_frontend.py
+```
+
+## 📊 Performance du modèle
+
+- **Algorithme**: Régression Logistique + TF-IDF
+- **Précision**: F1-Score de 100% sur les données d'entraînement
+- **Données**: 21,353 textes tunisiens
+- **Fake News**: 5,227 (24.5%)
+- **News Réelles**: 16,126 (75.5%)
+
+## 🛠️ Architecture du projet
 
 ```
 fake-news-detector/
-├── optuna_svm.py              # Main training script with Optuna optimization
-├── data_generator_pro.py      # Generate processed Tunisian dataset
-├── requirements.txt           # Python dependencies
-├── app/
-│   ├── api/
-│   │   └── api.py            # FastAPI web service for predictions
-│   └── data/
-│       ├── collect_data.py   # Collect and combine raw datasets
-│       ├── clean_data.py     # Clean the combined dataset
-│       └── preprocess_text.py # NLP preprocessing with spaCy
+├── optuna_svm.py              # Entraînement avec optimisation Optuna
+├── predict_api.py             # API FastAPI pour les prédictions
+├── streamlit_frontend.py      # Interface utilisateur moderne
+├── data_preprocessing.py      # Préparation des données
+├── data_generator_pro.py      # Génération du dataset tunisien
+├── requirements.txt           # Dépendances Python
+├── Dockerfile                 # Image Docker
+├── docker-compose.yml         # Orchestration des services
 ├── data/
-│   ├── raw/                  # Raw datasets (GossipCop, PolitiFact)
-│   ├── processed/            # Intermediate processed files
-│   └── *.csv                 # Final datasets
-├── model/                    # Trained models (joblib files)
-└── notebooks/                # Jupyter notebooks for exploration
+│   ├── raw/                  # Données brutes (GossipCop, PolitiFact)
+│   ├── processed/            # Données traitées
+│   └── *.csv                 # Datasets finaux
+├── model/                    # Modèles entraînés (.joblib)
+└── mlruns/                   # Suivi des expériences MLflow
 ```
 
-## Setup
+## 📡 API Documentation
 
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   python -m spacy download en_core_web_sm
-   ```
-
-2. **Prepare data:**
-   ```bash
-   # Generate the Tunisian professional dataset
-   python data_generator_pro.py
-
-   # Or process the full pipeline:
-   python app/data/collect_data.py
-   python app/data/clean_data.py
-   python app/data/preprocess_text.py
-   ```
-
-3. **Train the model:**
-   ```bash
-   python optuna_svm.py
-   ```
-
-4. **Run the API:**
-   ```bash
-   python app/api/api.py
-   ```
-
-   The API will be available at http://localhost:8000
-
-## API Usage
-
-### Predict Fake News
+### Prédire une fake news
 
 **Endpoint:** `POST /predict`
 
-**Request:**
+**Requête:**
 ```json
 {
-  "text": "Your news text here"
+  "text": "Le président tunisien annonce de nouvelles réformes économiques."
 }
 ```
 
-**Response:**
+**Réponse:**
 ```json
 {
-  "text": "Your news text here",
-  "prediction": 1,
-  "probability_fake": 0.85,
-  "probability_real": 0.15,
-  "is_fake": true
+  "text": "Le président tunisien annonce de nouvelles réformes économiques.",
+  "prediction": 0,
+  "probability_fake": 0.15,
+  "probability_real": 0.85,
+  "is_fake": false
 }
 ```
 
-### Health Check
+### Vérification santé
 
 **Endpoint:** `GET /health`
 
-Returns the API status and whether the model is loaded.
+Retourne le statut de l'API et si le modèle est chargé.
 
-## Model Details
+## 🔧 Technologies utilisées
 
-- **Algorithm:** Support Vector Machine (SVM) with RBF kernel
-- **Features:** TF-IDF vectorization (max 3000 features)
-- **Optimization:** Optuna hyperparameter tuning
-- **Class balancing:** Automatic class weighting
-- **Performance:** F1-score ~95% on test set
+- **Python 3.11**
+- **Scikit-learn** - Machine Learning
+- **FastAPI** - API web
+- **Streamlit** - Interface utilisateur
+- **Optuna** - Optimisation hyperparamètres
+- **MLflow** - Suivi des expériences
+- **Docker** - Conteneurisation
+- **Pandas** - Manipulation des données
 
-## Data Sources
+## 📚 Sources de données
 
-- **GossipCop:** Real and fake news from gossip websites
-- **PolitiFact:** Political fact-checking data
-- **Tunisian News:** Custom dataset for Tunisian news detection</content>
-<parameter name="filePath">c:\Users\Asus-\Desktop\fake-news-detector\README.md
+- **GossipCop**: Actualités réelles et fake depuis des sites de ragots
+- **PolitiFact**: Données de vérification factuelle politique
+- **News Tunisiennes**: Dataset personnalisé pour les actualités tunisiennes
+
+## 🤝 Contribution
+
+Les contributions sont les bienvenues ! N'hésitez pas à :
+
+1. Fork le projet
+2. Créer une branche (`git checkout -b feature/AmazingFeature`)
+3. Commit vos changements (`git commit -m 'Add some AmazingFeature'`)
+4. Push vers la branche (`git push origin feature/AmazingFeature`)
+5. Ouvrir une Pull Request
+
+## 📄 Licence
+
+Ce projet est sous licence MIT - voir le fichier [LICENSE](LICENSE) pour plus de détails.
+
+## 👨‍💻 Auteur
+
+**Ryma78** - *Développement initial*
+
+---
+
+⭐ Si ce projet vous plaît, n'oubliez pas de mettre une étoile !
